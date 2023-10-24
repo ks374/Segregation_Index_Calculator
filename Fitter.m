@@ -8,6 +8,7 @@ classdef Fitter
         ipsi_values;
         
         seg_index;
+        Vari;
         
         x1;x2;x3;
         y1;y2;y3;
@@ -98,6 +99,11 @@ classdef Fitter
             A_total = sum(obj.Y);
             obj.seg_index = (A_contra + A_ipsi)/A_total;
             disp(['Segregation index equals: ' num2str(obj.seg_index)]);
+        end
+        
+        function obj = get_variance(obj)
+            obj.Vari = var(obj.x1);
+            disp(['Variacne: ' num2str(obj.Vari)]);
         end
     end
 end
