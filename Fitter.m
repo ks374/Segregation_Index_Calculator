@@ -3,6 +3,7 @@ classdef Fitter
     %   Detailed explanation goes here
     
     properties
+        name;
         dLGN_values;
         contra_values;
         ipsi_values;
@@ -19,7 +20,8 @@ classdef Fitter
     end
     
     methods
-        function obj = Fitter(dLGN_values,contra_values,ipsi_values)
+        function obj = Fitter(name,dLGN_values,contra_values,ipsi_values)
+            obj.name = name;
             if size(dLGN_values,1) == 1
                 dLGN_values = dLGN_values';
                 contra_values = contra_values';
@@ -65,8 +67,8 @@ classdef Fitter
         end
         function obj = Fit_two_peak(obj)
             options = fitoptions('gauss3');
-            options.Lower = [0,-Inf,0,0,obj.Mu2,obj.Sig2,0,obj.Mu3,obj.Sig3];
-            options.Upper = [Inf,Inf,Inf,Inf,obj.Mu2,obj.Sig2,Inf,obj.Mu3,obj.Sig3];
+            options.Lower = [0,obj.Mu2,0,0,obj.Mu2,obj.Sig2,0,obj.Mu3,obj.Sig3];
+            options.Upper = [Inf,obj.Mu3,Inf,Inf,obj.Mu2,obj.Sig2,Inf,obj.Mu3,obj.Sig3];
             f = fit(obj.x1,obj.y1,'gauss3',options);
             obj.A1 = f.a1;obj.A2=f.a2;obj.A3 = f.a3;
             obj.Mu1=f.b1;obj.Sig1=f.c1;
@@ -79,7 +81,7 @@ classdef Fitter
             disp([num2str(obj.A3),' ',num2str(obj.Mu3),' ',num2str(obj.Sig3)]);
             disp("Parameters for mixed:");
             disp([num2str(obj.A1),' ',num2str(obj.Mu1),' ',num2str(obj.Sig1)]);
-            obj.x = linspace(-1,1,1000);
+            obj.x = linspace(-3,3,1000);
             obj.Y1 = obj.A1*exp(-((obj.x-obj.Mu1)./obj.Sig1).^2);
             obj.Y2 = obj.A2*exp(-((obj.x-obj.Mu2)./obj.Sig2).^2);
             obj.Y3 = obj.A3*exp(-((obj.x-obj.Mu3)./obj.Sig3).^2);

@@ -94,6 +94,10 @@ classdef Img_processer
             %Calculate log10(I/C)
             %PixelList from function: Pix_list_logic
             value_list = log10(double(obj.Img_rescale_green(PixelList))./double(obj.Img_rescale_red(PixelList)));
+            Invalid_ratio = numel(find(isnan(value_list))) / numel(value_list) + numel(find(isinf(value_list))) / numel(value_list);
+            disp(['Invalide pixel ratio = ',num2str(Invalid_ratio)]);
+            value_list = value_list(~isnan(value_list));
+            value_list = value_list(~isinf(value_list));
         end
         
     end

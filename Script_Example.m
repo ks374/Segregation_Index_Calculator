@@ -1,17 +1,18 @@
 %clear;clc
 input_path = 'D:\Reaearch\Projects\Project_18_ET33 axon labeling\Data\20230931_Tigre_Conv\';
 %file_name = 'Control_Left.tif';
+%filename_list = {'Control_right.tif','Epi_left.tif','Epi_right.tif'};
 filename_list = {'Control_left.tif','Control_right.tif','Epi_left.tif','Epi_right.tif'};
 % filename_list = ['Epi_right.tif'];
 F_list = [];
 for i = 1:numel(filename_list)
-    file_name = filename_list;
+    file_name = filename_list{i};
     temp_name = split(file_name,'.');
     output_path = [input_path 'output_' temp_name{1} '\'];
     if ~exist(output_path,'dir')
         mkdir(output_path);
     end
-    radius = 0;
+    radius = 1200;
 
     CL = Background_reduction(input_path,file_name,3,2);
     CL = CL.Avg_map_cal(radius);
@@ -36,7 +37,8 @@ for i = 1:numel(filename_list)
     contra_value = IP.log_cal(contra_pixlist);
     ipsi_value = IP.log_cal(ipsi_pixlist);
     %
-    F = Fitter(dLGN_value,contra_value,ipsi_value);
+    %F = Fitter(dLGN_value,contra_value,ipsi_value);
+    F = Fitter(temp_name{1},dLGN_value,contra_value,ipsi_value);
     F = F.check_histogram(output_path);
     %
     F = F.Fit_one_peak;
@@ -51,3 +53,10 @@ for i = 1:numel(filename_list)
     
 end
 disp('Process done');
+%%
+outpath = [input_path 'Output_3\'];
+FL = F_list_plotter(F_list);
+FL = FL.get_hist_orig(outpath);
+FL = FL.hist_align;
+FL = FL.get_hist_fit(outpath);
+FL = FL.get_hist(outpath);
