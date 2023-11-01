@@ -1,4 +1,4 @@
-%clear;clc
+clear;clc
 input_path = 'D:\Reaearch\Projects\Project_18_ET33 axon labeling\Data\20230931_Tigre_Conv\';
 %file_name = 'Control_Left.tif';
 %filename_list = {'Control_right.tif','Epi_left.tif','Epi_right.tif'};
@@ -12,7 +12,7 @@ for i = 1:numel(filename_list)
     if ~exist(output_path,'dir')
         mkdir(output_path);
     end
-    radius = 1200;
+    radius = 0;
 
     CL = Background_reduction(input_path,file_name,3,2);
     CL = CL.Avg_map_cal(radius);
@@ -37,8 +37,8 @@ for i = 1:numel(filename_list)
     contra_value = IP.log_cal(contra_pixlist);
     ipsi_value = IP.log_cal(ipsi_pixlist);
     %
-    %F = Fitter(dLGN_value,contra_value,ipsi_value);
     F = Fitter(temp_name{1},dLGN_value,contra_value,ipsi_value);
+%     F = F.delete_zeros;
     F = F.check_histogram(output_path);
     %
     F = F.Fit_one_peak;
@@ -47,6 +47,7 @@ for i = 1:numel(filename_list)
     %
     F = F.get_segregate_index;
     F = F.get_variance;
+    F = F.get_variance_norm;
     
     F_list = [F_list,F];
     save([output_path,'F.mat'],'F');
@@ -54,7 +55,8 @@ for i = 1:numel(filename_list)
 end
 disp('Process done');
 %%
-outpath = [input_path 'Output_3\'];
+%Move the output folders to Output_*
+outpath = [input_path 'Output_6\'];
 FL = F_list_plotter(F_list);
 FL = FL.get_hist_orig(outpath);
 FL = FL.hist_align;

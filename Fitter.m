@@ -10,6 +10,7 @@ classdef Fitter
         
         seg_index;
         Vari;
+        Vari_norm;
         
         x1;x2;x3;
         y1;y2;y3;
@@ -54,7 +55,7 @@ classdef Fitter
                 savefig([outpath 'hist_all.fig']);
             end
         end
-        
+                
         function obj = Fit_one_peak(obj)
             f = fit(obj.x2,obj.y2,'gauss1');
             obj.Mu2 = f.b1;
@@ -104,8 +105,20 @@ classdef Fitter
         end
         
         function obj = get_variance(obj)
-            obj.Vari = var(obj.x1);
+            obj.Vari = var(obj.dLGN_values);
             disp(['Variacne: ' num2str(obj.Vari)]);
+        end
+        
+        function obj = get_variance_norm(obj)
+            temp = obj.dLGN_values / max(obj.dLGN_values);
+            obj.Vari_norm = var(temp);
+            disp(['Normalized variacne: ' num2str(obj.Vari_norm)]);
+        end
+        
+        function obj = delete_zeros(obj)
+            obj.dLGN_values = obj.dLGN_values(obj.dLGN_values~=0);
+            obj.contra_values = obj.contra_values(obj.contra_values~=0);
+            obj.ipsi_values = obj.ipsi_values(obj.ipsi_values~=0);
         end
     end
 end
