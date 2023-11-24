@@ -149,7 +149,7 @@ classdef Conv_image
                     figure;imshow(obj.Img_thred_red);
                     imwrite(obj.Img_thred_red,[outpath obj.Img_name '_red.tiff']);
                     
-                    obj.Rarea = numel(find(obj.Rpix > obj.Rthre));
+                    obj.Rarea = numel(find(obj.Img_thred_red));
                     obj.Rratio = obj.Rarea/obj.Total_area;
                     disp(['R area: ' num2str(obj.Rarea)]);
                     disp(['R ratio: ' num2str(obj.Rratio)]);
@@ -158,7 +158,7 @@ classdef Conv_image
                     figure;imshow(obj.Img_thred_green);
                     imwrite(obj.Img_thred_green,[outpath obj.Img_name '_green.tiff']);
                     
-                    obj.Garea = numel(find(obj.Gpix > obj.Gthre));
+                    obj.Garea = numel(find(obj.Img_thred_green));
                     obj.Gratio = obj.Garea/obj.Total_area;
                     disp(['G area: ' num2str(obj.Garea)]);
                     disp(['G ratio: ' num2str(obj.Gratio)]);
