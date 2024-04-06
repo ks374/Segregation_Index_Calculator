@@ -100,6 +100,30 @@ classdef Img_processer
             value_list = value_list(~isinf(value_list));
         end
         
+        %Update for log(A/B) heatmap generation. 
+        function check_log_heatmap(obj,Is_sel,color_map)
+            %Generate a log(A/B) heatmap. If Is_sel is true, the heatmap
+            %will be limited to previously selected dLGN region. Otherwise
+            %it will be for the whole input image. 
+            %The function should be run after selection and normalization. 
+            
+            %Image: Img_rescale_red, Img_rescale_green. 
+            if nargin < 3
+                color_map = 'parula';
+            end
+            value_map = log10(double(obj.Img_rescale_green)./double(obj.Img_rescale_red));
+            y_axis = 1:size(obj.Img_red,1);
+            x_axis = 1:size(obj.Img_red,2);
+            [x_axis,y_axis] = meshgrid(x_axis,y_axis);
+            if Is_sel == 1
+                In_matrix = inpolygon(x_axis,y_axis,obj.dLGN_ROI(:,1),obj.dLGN_ROI(:,2));
+                value_map = value_map.*double(In_matrix);
+            end
+            figure;
+            imagesc(value_map);
+            colorbar;
+            eval(['colormap ' color_map]);
+        end
     end
 end
 

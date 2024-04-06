@@ -1,5 +1,5 @@
 clear;clc
-input_path = 'D:\Reaearch\Projects\Project_18_ET33 axon labeling\Data\20230931_Tigre_Conv\';
+input_path = 'D:\Reaearch\Projects\Project_18_ET33 axon labeling\Data\20230931_Tigre_Conv_Conv_method\Segregation_Index_Calculator\Image_Example\Input\';
 %file_name = 'Control_Left.tif';
 %filename_list = {'Control_right.tif','Epi_left.tif','Epi_right.tif'};
 filename_list = {'Control_left.tif','Control_right.tif','Epi_left.tif','Epi_right.tif'};
