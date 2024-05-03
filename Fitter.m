@@ -65,6 +65,14 @@ classdef Fitter
             obj.Mu3 = f.b1;
             obj.Sig3 = f.c1;
             disp('Done fit')
+            if obj.Mu2 > obj.Mu3
+                temp = obj.Mu2;
+                obj.Mu2 = obj.Mu3;
+                obj.Mu3 = temp;
+                temp = obj.Sig2;
+                obj.Sig2 = obj.Sig3;
+                obj.Sig3 = temp;
+            end
         end
         function obj = Fit_two_peak(obj)
             options = fitoptions('gauss3');
